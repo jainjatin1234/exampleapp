@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserAuthController;
+use App\Http\Controllers\ApiController;
+
+use App\Http\Controllers\NoteController;
 
 
 /*
@@ -50,6 +53,20 @@ Route::get('search-student/{name}',[StudentController::class,'searchstudent']);
 // Route::get('login',[UserAuthController::class,'login'])->name('login');
 
 
+Route::post('add-note',[NoteController::class,'addNote']);
+Route::get('getnotes',[NoteController::class,'getnotes']);
+Route::get('getoneNote/{id}',[NoteController::class,'getonenote']);
+Route::delete('delete-note/{id}',[NoteController::class,'deletenote']);
+Route::put('update-note/{id}',[NoteController::class,'updatenote']);
+
 
 
 Route::post('/upload', [StudentController::class, 'uploadFile']); 
+
+Route::post('login', [ApiController::class, 'login']);
+Route::post('register', [ApiController::class, 'register']);
+Route::get('getusers',[ApiController::class,'getuser']);
+
+Route::group(['middleware' => ['jwt.verify']],function(){
+    Route::get('logout',[ApiController::class,'logout']);
+});
