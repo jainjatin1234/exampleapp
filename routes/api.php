@@ -59,7 +59,7 @@ Route::get('getoneNote/{id}',[NoteController::class,'getonenote']);
 Route::delete('delete-note/{id}',[NoteController::class,'deletenote']);
 Route::put('update-note/{id}',[NoteController::class,'updatenote']);
 
-
+ 
 
 Route::post('/upload', [StudentController::class, 'uploadFile']); 
 

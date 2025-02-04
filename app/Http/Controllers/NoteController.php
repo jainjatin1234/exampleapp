@@ -85,6 +85,7 @@ class NoteController extends Controller
                 'code'    => 500
             ], 500);  // Return error response if the update fails
         }
+    }
         
     function deletenote($id){
         $note = Note::destroy($id);
@@ -101,4 +102,4 @@ class NoteController extends Controller
 
 
      }
-    }
+    

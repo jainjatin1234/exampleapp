@@ -37,9 +37,12 @@ class ApiController extends Controller
        if($user){
         return response()->json([
             'success' => true,
+            'code' => 201,
             'message' => 'User created successfully',
             'data'=>$user
         ],Response::HTTP_OK);
+       }else{
+        return response()->json(['message' => 'Operation failed', 'code'=>500]); 
        }
     }    
 }
