@@ -32,7 +32,6 @@ Route::get('/test',function(){
 
 Route::post('signup',[UserAuthController::class,'signup']);
 Route::post('login',[UserAuthController::class,'login']);
-
 // Route::group(['middleware'=>"auth:sanctum"],function(){
 
 // });
@@ -63,7 +62,7 @@ Route::put('update-note/{id}',[NoteController::class,'updatenote']);
 
 Route::post('/upload', [StudentController::class, 'uploadFile']); 
 
-Route::post('login', [ApiController::class, 'login']);
+Route::post('login', [ApiController::class, 'loginuser']);
 Route::post('register', [ApiController::class, 'register']);
 Route::get('getusers',[ApiController::class,'getuser']);
 

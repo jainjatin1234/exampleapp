@@ -6,6 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
 
 class ApiController extends Controller
 {
@@ -31,7 +34,7 @@ class ApiController extends Controller
       $user =  User::create([
         'name'=> $req->name,
         'email'=> $req->email,
-        'password'=> $req->password
+        'password'=> bcrypt($req->password)
        ]);
 
        if($user){
@@ -45,4 +48,47 @@ class ApiController extends Controller
         return response()->json(['message' => 'Operation failed', 'code'=>500]); 
        }
     }    
+
+
+    public function loginuser(Request $request){
+        $credentials = $request->only('email','password');
+
+        //valid credential
+        $validator = Validator::make($credentials,[
+            'email' => 'required|email',
+            'password' => 'required|string|min:6'
+        ]);
+
+        //send failed response if request is not valid
+        if($validator->fails()){
+            return response()->json(['error' => $validator->errors()], 200);
+        }
+
+        //request is validated
+        //create token
+        try{
+            if(! $token = JWTAuth::attempt($credentials)){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'login credentials are invalid',
+                    'code'=>400
+                ]);
+            }
+        }catch(JWTException $e){
+            return $credentials;
+            return response()->json([
+                'success' => false,
+                'message' => 'could not create token',
+            ],500);
+        }
+
+        //token created, return with success response and get jwt token
+        return response()->json([
+            'success' => true,
+            'token' => $token,
+            'code' => 201,
+            'message' => 'login successfully',
+            'user_details' => $credentials['email']
+        ]);
+    }
 }
